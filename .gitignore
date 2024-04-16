@@ -484,3 +484,6 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Ignore js files
+build/
