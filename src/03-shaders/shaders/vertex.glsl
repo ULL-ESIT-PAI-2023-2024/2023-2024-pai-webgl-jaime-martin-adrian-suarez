@@ -4,6 +4,8 @@ attribute vec4 aVertexColor;
 uniform mat4 uModelViewMatrix;
 uniform mat4 uProjectionMatrix;
 
+// <------------------------------ This is the new code ------------------------------>
+
 /**
  * We pass the color from the vertex shader to the fragment shader
  * using a varying. This is a special variable that is declared by

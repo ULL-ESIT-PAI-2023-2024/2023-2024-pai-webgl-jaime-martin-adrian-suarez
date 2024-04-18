@@ -8,6 +8,8 @@
  */
 varying lowp vec4 vColor;
 
+// <------------------------------ This is the new code ------------------------------>
+
 void main(void) {
   gl_FragColor = vColor;
 }

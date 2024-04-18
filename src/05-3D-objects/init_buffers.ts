@@ -1,4 +1,19 @@
+/**
+ * Universidad de La Laguna
+ * Escuela Superior de Ingeniería y Tecnología
+ * Grado en Ingeniería Informática
+ * Programación de Aplicaciones Interactivas 2023-2024
+ *
+ * @authors Jaime Martín González     alu0101476124@ull.edu.es
+ *          Adrián Suárez Tabares     alu0101495439@ull.edu.es
+ * @since April 16 2024
+ * @desc  draw_scene.ts: This file contains the code to draw the scene.
+ *
+ */
+
 import { BufferInformation } from './types';
+
+// <------------------------------ This is the new code ------------------------------>
 
 export default function initBuffers(gl: WebGLRenderingContext): BufferInformation {
   const vertex = initVertexBuffer(gl);
