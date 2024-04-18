@@ -26,10 +26,10 @@ function initVertexBuffer(gl: WebGLRenderingContext): WebGLBuffer {
 
   // Now create an array of positions for the square.
   const vertices: number[] = [ // x, y
-    1.0, 1.0,
-    -1.0, 1.0,
-    1.0, -1.0,
-    -1.0, -1.0
+    1.0, 1.0, // right top
+    -1.0, 1.0, // left top
+    1.0, -1.0, // right bottom
+    -1.0, -1.0 // left bottom
   ];
 
   // Now pass the list of positions into WebGL to build the
@@ -58,8 +58,8 @@ function initColorBuffer(gl: WebGLRenderingContext): WebGLBuffer {
   ];
 
   const colorBuffer: WebGLBuffer = gl.createBuffer() as WebGLBuffer;
-  gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+  gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer); // Reserving the buffer for color data
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW); // Adding the color data
 
   return colorBuffer;
 }
