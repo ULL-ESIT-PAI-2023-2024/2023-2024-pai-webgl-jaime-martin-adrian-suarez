@@ -7,11 +7,12 @@
  * @authors Jaime Martín González     alu0101476124@ull.edu.es
  *          Adrián Suárez Tabares     alu0101495439@ull.edu.es
  * @since April 16 2024
- * @desc  draw_scene.ts: This file contains the code to draw the scene.
+ * @desc Draws the scene.
  *
  */
 
 import { BufferInformation, ProgramInformation } from './types';
+import { mat4 } from 'gl-matrix';
 
 export default function drawScene(gl: WebGLRenderingContext,
   programInfo: ProgramInformation, buffers: BufferInformation) {
@@ -51,11 +52,9 @@ export default function drawScene(gl: WebGLRenderingContext,
     [-0.0, 0.0, -6.0]   // amount to translate. (x, y, z)
   );
 
-  // Tell WebGL how to pull out the positions and colors from the buffers
-  setAttribute(gl, buffers.vertex, programInfo.attribLocations.vertexPosition, 2);
-  setAttribute(gl, buffers.color, programInfo.attribLocations.vertexColor, 4);
-  // setPositionAttribute(gl, buffers, programInfo);
-  // setColorAttribute(gl, buffers, programInfo);
+  // Tell WebGL how to pull out the positions from the position
+  // buffer into the vertexPosition attribute.
+  setPositionAttribute(gl, buffers, programInfo);
 
   // Tell WebGL to use our program when drawing
   gl.useProgram(programInfo.program);
@@ -64,12 +63,12 @@ export default function drawScene(gl: WebGLRenderingContext,
   gl.uniformMatrix4fv(
     programInfo.uniformLocations.projectionMatrix,
     false,
-    projectionMatrix
+    projectionMatrix as Float32Array 
   );
   gl.uniformMatrix4fv(
     programInfo.uniformLocations.modelViewMatrix,
     false,
-    modelViewMatrix
+    modelViewMatrix as Float32Array
   );
 
   // Draw the square, with offset 0, and 4 vertices
@@ -77,30 +76,30 @@ export default function drawScene(gl: WebGLRenderingContext,
 }
 
 /**
- * @description Tell WebGL how to pull out the attribute from the buffer
- *  into the attribute given by the index.
+ * @description Tell WebGL how to pull out the positions from the position
+ * buffer into the vertexPosition attribute.
  *
  * @param gl The WebGL context
- * @param buffer  The buffer information
- * @param vertexIndex The index of the attribute
- * @param numComponents How many values are pulled out per iteration
+ * @param buffers  The buffer information
+ * @param programInfo The information about the program
  */
-function setAttribute(gl: WebGLRenderingContext, buffer: WebGLBuffer,
-  vertexIndex: number, numComponents: number): void {
+function setPositionAttribute(gl: WebGLRenderingContext,
+  buffers: BufferInformation, programInfo: ProgramInformation): void {
+  const numComponents = 2;    // pull out 2 values per iteration
   const type = gl.FLOAT;      // the data in the buffer is 32bit floats
   const normalize = false;    // don't normalize
   const stride = 0;           // how many bytes to get from one set of values to the next
 
   // 0 -> use type and numComponents above
   const offset = 0; // how many bytes inside the buffer to start from
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffers.vertex);
   gl.vertexAttribPointer(
-    vertexIndex,
+    programInfo.attribLocations.vertexPosition,
     numComponents,
     type,
     normalize,
     stride,
     offset
   );
-  gl.enableVertexAttribArray(vertexIndex);
+  gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
 }

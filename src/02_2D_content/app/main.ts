@@ -7,13 +7,13 @@
  * @authors Jaime Martín González     alu0101476124@ull.edu.es
  *          Adrián Suárez Tabares     alu0101495439@ull.edu.es
  * @since April 16 2024
- * @desc  04_animating.ts: This file contains the code to animate a square.
+ * @desc  02_2D_content.ts: This file contains the code to initialize the WebGL context, clear the canvas and draw a square.
  *
  */
 
-import { BufferInformation, ProgramInformation } from './types';
-import initBuffers from './init_buffers.js';
-import drawScene from './draw_scene.js';
+import { BufferInformation, ProgramInformation } from './types.js';
+import initBuffers from './init_buffers';
+import drawScene from './draw_scene';
 
 /**
  * @description Initialize a shader program, so WebGL knows how to draw our data.
@@ -78,10 +78,7 @@ function loadShader(gl: WebGLRenderingContext, type: GLenum,
   return shader;
 }
 
-async function main(): Promise<void> {
-  let squareRotation: number = 0.0;
-  let deltaTime: number = 0;
-
+async function  main(): Promise<void> {
   const canvas: HTMLCanvasElement = document.getElementById('glcanvas') as HTMLCanvasElement;
 
   // Initialize the GL context
@@ -102,6 +99,7 @@ async function main(): Promise<void> {
   gl.clear(gl.COLOR_BUFFER_BIT);
 
   // ------------------------ Second part of the tutorial ------------------------
+
   const vsSource = await fetch("shaders/vertex.glsl").then((res) => res.text());
   const fsSource = await fetch("shaders/fragment.glsl").then((res) => res.text());
 
@@ -116,7 +114,6 @@ async function main(): Promise<void> {
     program: shaderProgram,
     attribLocations: {
       vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
-      vertexColor: gl.getAttribLocation(shaderProgram, 'aVertexColor'),
     },
     uniformLocations: {
       projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix') as WebGLUniformLocation,
@@ -128,20 +125,8 @@ async function main(): Promise<void> {
   // objects we'll be drawing.
   const buffers: BufferInformation = initBuffers(gl);
 
-  let then = 0;
-  // Draw the scene repeatedly
-  function render(now: number): void {
-    now *= 0.001; // convert to seconds
-    deltaTime = now - then;
-    then = now;
-
-    drawScene(gl, programInfo, buffers, squareRotation);
-    squareRotation += deltaTime;
-
-    requestAnimationFrame(render);
-  }
-  requestAnimationFrame(render);
+  // Draw the scene
+  drawScene(gl, programInfo, buffers);
 }
-
 
 main();
