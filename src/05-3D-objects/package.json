@@ -1,0 +1,37 @@
+{
+  "name": "web-gl",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/ULL-ESIT-PAI-2023-2024/2023-2024-pai-webgl-jaime-martin-adrian-suarez",
+  "authors": [
+    {
+      "name": "Adrián Suárez Tabares",
+      "email": "alu0101495439@ull.edu.es",
+      "url": ""
+    },
+    {
+      "name": "Jaime Martín González",
+      "email": "alu0101476124@ull.edu.es",
+      "url": "https://github.com/gianluisdiana"
+    }
+  ],
+
+  "scripts": {
+    "clean": "rm -rf dist node_modules",
+    "build": "webpack"
+  },
+
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.11.1",
+    "ts-loader": "^9.5.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.5",
+    "webpack": "^5.91.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "@types/gl-matrix": "^3.2.0",
+    "gl-matrix": "^3.4.3"
+  }
+}
