@@ -19,7 +19,7 @@ import { startAnimation } from './animation';
 
 /**
  * @desc Main function that initializes the WebGL context, creates the shader program, initializes the buffers and starts the animation.
- * @returns Promise<void> created by the async function.
+ * @returns Promise<void> cr
  */
 async function main(): Promise<void> {
   let gl = createGLContext('WebGLCanvas');
@@ -28,8 +28,7 @@ async function main(): Promise<void> {
   const programInfo: ProgramInformation = createProgramInfo(gl, shaderProgram);
   const buffers: BufferInformation = initBuffers(gl);
 
-  const increment = 0.02;
-  startAnimation(gl, programInfo, buffers, increment);
+  startAnimation(gl, programInfo, buffers);
 }
 
 main();
