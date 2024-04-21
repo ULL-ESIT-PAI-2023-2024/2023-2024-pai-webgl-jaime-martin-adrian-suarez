@@ -28,8 +28,7 @@ async function main(): Promise<void> {
   const programInfo: ProgramInformation = createProgramInfo(gl, shaderProgram);
   const buffers: BufferInformation = initBuffers(gl);
 
-  const increment = 0.02;
-  startAnimation(gl, programInfo, buffers, increment);
+  startAnimation(gl, programInfo, buffers);
 }
 
 main();
