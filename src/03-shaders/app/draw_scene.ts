@@ -14,6 +14,11 @@
 import { BufferInformation, ProgramInformation } from './types';
 import { mat4 } from 'gl-matrix';
 
+/**
+ * @description Draw the scene with the given WebGL context, program and buffers.
+ * @param gl The WebGL context to draw on
+ * @param programInfo The program information
+ */
 export default function drawScene(gl: WebGLRenderingContext,
   programInfo: ProgramInformation, buffers: BufferInformation) {
   gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Clear to black, fully opaque. (r, g, b, a)

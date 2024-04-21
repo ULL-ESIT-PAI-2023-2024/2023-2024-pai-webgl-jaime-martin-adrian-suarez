@@ -13,12 +13,22 @@
 
 import { BufferInformation } from './types';
 
+/**
+ * @desc Initializes the buffers.
+ * @param gl WebGLRenderingContext to use.
+ * @returns BufferInformation with the buffers.
+ */
 export default function initBuffers(gl: WebGLRenderingContext): BufferInformation {
   return {
     vertex: initVertexBuffer(gl),
   };
 }
 
+/**
+ * @desc Initializes the vertex buffer.
+ * @param gl WebGLRenderingContext to use.
+ * @returns WebGLBuffer with the vertex buffer.
+ */
 function initVertexBuffer(gl: WebGLRenderingContext): WebGLBuffer {
   // Create a buffer for the square's positions.
   const vertexBuffer = gl.createBuffer() as WebGLBuffer;

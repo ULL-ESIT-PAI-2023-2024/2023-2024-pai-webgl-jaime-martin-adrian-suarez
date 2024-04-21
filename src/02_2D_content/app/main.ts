@@ -26,4 +26,4 @@ async function  main(): Promise<void> {
   drawScene(gl, programInfo, buffers);
 }
 
-main();
+main(); 

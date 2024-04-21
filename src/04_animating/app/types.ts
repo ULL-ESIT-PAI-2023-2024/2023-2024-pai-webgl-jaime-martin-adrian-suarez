@@ -27,3 +27,21 @@ export interface BufferInformation {
   vertex: WebGLBuffer;
   color: WebGLBuffer;
 }
+
+/**
+ * This function creates a program information object.
+ * @param gl WebGLRenderingContext to get the locations.
+ */
+export function createProgramInfo(gl: WebGLRenderingContext, shaderProgram: WebGLProgram): ProgramInformation {
+  return {
+    program: shaderProgram,
+    attribLocations: {
+      vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
+      vertexColor: gl.getAttribLocation(shaderProgram, 'aVertexColor'),
+    },
+    uniformLocations: {
+      projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix') as WebGLUniformLocation,
+      modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix') as WebGLUniformLocation,
+    },
+  };
+}

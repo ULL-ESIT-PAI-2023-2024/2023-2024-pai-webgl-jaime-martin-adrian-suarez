@@ -30,6 +30,12 @@ export interface BufferInformation {
   color: WebGLBuffer;
 }
 
+/**
+ * @desc This function creates a program information object.
+ * @param gl WebGLRenderingContext to get the locations.
+ * @param shaderProgram WebGLProgram to get the locations.
+ * @returns ProgramInformation object.
+ */
 export function createProgramInfo(gl: WebGLRenderingContext, shaderProgram: WebGLProgram): ProgramInformation {
   return {
     program: shaderProgram,

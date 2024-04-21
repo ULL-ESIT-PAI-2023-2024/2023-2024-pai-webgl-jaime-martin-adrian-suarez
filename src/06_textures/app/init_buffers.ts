@@ -7,11 +7,13 @@
  * @authors Jaime Martín González     alu0101476124@ull.edu.es
  *          Adrián Suárez Tabares     alu0101495439@ull.edu.es
  * @since April 16 2024
- * @desc  init_buffers.ts: This file contains the functions to initialize the buffers
+ * @desc  draw_scene.ts: This file contains the code to draw the scene.
  *
  */
 
 import { BufferInformation } from './types';
+
+// <------------------------------ This is the new code ------------------------------>
 
 export default function initBuffers(gl: WebGLRenderingContext): BufferInformation {
   const vertex = initVertexBuffer(gl);
@@ -87,36 +89,6 @@ function initVertexBuffer(gl: WebGLRenderingContext): WebGLBuffer {
 }
 
 /**
- * @description Creates a js array with four colors (rgba values), one for each vertex.
- * Then creates a WebGLBuffer and fills it with the color data.
- *
- * @param gl The WebGL context to use
- * @returns A WebGLBuffer containing the color data
- */
-export function initColorBuffer(gl: WebGLRenderingContext): WebGLBuffer {
-  const faceColors = [
-    [1.0, 1.0, 1.0, 1.0], // Front face: white
-    [1.0, 0.0, 0.0, 1.0], // Back face: red
-    [0.0, 1.0, 0.0, 1.0], // Top face: green
-    [0.0, 0.0, 1.0, 1.0], // Bottom face: blue
-    [1.0, 1.0, 0.0, 1.0], // Right face: yellow
-    [1.0, 0.0, 1.0, 1.0], // Left face: purple
-  ];
-
-  // Convert the array of colors into a table for all the vertices.
-  const colors = [];
-  for (const color of faceColors) {
-    colors.push(...color, ...color, ...color, ...color);
-  }
-
-  const colorBuffer: WebGLBuffer = gl.createBuffer() as WebGLBuffer;
-  gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
-
-  return colorBuffer;
-}
-
-/**
  * @description Creates indexes arrays that define each face like a pair of
  *   triangles, specifying each triangle's vertices as an index into the cube's
  *   vertex arrays.
@@ -169,6 +141,8 @@ function initIndexBuffer(gl: WebGLRenderingContext): WebGLBuffer {
 
   return indexBuffer;
 }
+
+// -----------------------------> This is the new code <----------------------------- //
 
 /**
  * @description Creates a WebGL buffer to store the coordinates for each face

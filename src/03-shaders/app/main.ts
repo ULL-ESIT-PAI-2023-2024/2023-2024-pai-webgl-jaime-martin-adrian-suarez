@@ -17,6 +17,10 @@ import drawScene from './draw_scene';
 import createGLContext from './context';
 import createShaderProgram from './shaders';
 
+/**
+ * @desc Main function that initializes the WebGL context, creates the shader program, initializes the buffers, and draws the scene.
+ * @returns {Promise<void>} - A promise that resolves when the main function finishes.
+ */
 async function  main(): Promise<void> {
   let gl = createGLContext('WebGLCanvas');
 

@@ -26,6 +26,13 @@ export interface BufferInformation {
   vertex: WebGLBuffer;
 }
 
+/**
+ * @desc Creates a shader of the given type, uploads the source and compiles it.
+ * @param gl WebGLRenderingContext
+ * @param type Shader type (VERTEX_SHADER | FRAGMENT_SHADER)
+ * @param source Shader source code
+ * @returns Compiled shader
+ */
 export function createProgramInfo(gl: WebGLRenderingContext, shaderProgram: WebGLProgram): ProgramInformation {
   return {
     program: shaderProgram,

@@ -14,21 +14,12 @@
 import { BufferInformation, ProgramInformation } from './types';
 import { mat4 } from 'gl-matrix';
 
-export default function drawScene(gl: WebGLRenderingContext,
-  programInfo: ProgramInformation, buffers: BufferInformation, cubeRotation: number) {
-  gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Clear to black, fully opaque. (r, g, b, a)
-  gl.clearDepth(1.0);                 // Clear everything
-  gl.enable(gl.DEPTH_TEST);           // Enable depth testing
-  gl.depthFunc(gl.LEQUAL);            // Near things obscure far things
-
-  // Clear the canvas before we start drawing on it.
-  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-  // Create a perspective matrix, a special matrix that is used to simulate the
-  // distortion of perspective in a camera.
-  // Our field of view is 45 degrees, with a width/height ratio that matches the
-  // display size of the canvas and we only want to see objects between 0.1 units
-  // and 100 units away from the camera.
+/**
+ * @desc The projection matrix. This matrix is used to simulate the distortion of perspective in a camera.
+ * @param gl The WebGL context.
+ * @returns The projection matrix.
+ */
+function defineProjectionMatrix(gl: WebGLRenderingContext): mat4 {
 
   const fieldOfView = (45 * Math.PI) / 180; // in radians
   const aspect = gl.canvas.width / gl.canvas.height;
@@ -39,9 +30,15 @@ export default function drawScene(gl: WebGLRenderingContext,
   // note: glmatrix.js always has the first argument
   // as the destination to receive the result.
   mat4.perspective(projectionMatrix, fieldOfView, aspect, zNear, zFar);
+  return projectionMatrix;
+}
 
-  // Set the drawing position to the "identity" point, which is
-  // the center of the scene.
+/**
+ * @desc The model view matrix. This matrix is used to simulate the position and orientation of the camera.
+ * @param gl The WebGL context.
+ * @returns The model view matrix.
+ */
+function defineModelViewMatrix(cameraRotation: number): mat4 {
   const modelViewMatrix = mat4.create();
 
   // Now move the drawing position a bit to where we want to
@@ -55,26 +52,49 @@ export default function drawScene(gl: WebGLRenderingContext,
   mat4.rotate(
     modelViewMatrix, // destination matrix
     modelViewMatrix, // matrix to rotate
-    cubeRotation, // amount to rotate in radians
+    cameraRotation, // amount to rotate in radians
     [0, 0, 1]
   ); // axis to rotate around (Z)
   mat4.rotate(
     modelViewMatrix, // destination matrix
     modelViewMatrix, // matrix to rotate
-    cubeRotation * 0.7, // amount to rotate in radians
+    cameraRotation * 0.7, // amount to rotate in radians
     [0, 1, 0]
   ); // axis to rotate around (Y)
   mat4.rotate(
     modelViewMatrix, // destination matrix
     modelViewMatrix, // matrix to rotate
-    cubeRotation * 0.3, // amount to rotate in radians
+    cameraRotation * 0.3, // amount to rotate in radians
     [1, 0, 0]
   ); // axis to rotate around (X)
+  return modelViewMatrix;
+}
 
+/**
+ * @description Draw the scene with the specified WebGL context, program information, buffers and square rotation.
+ * @param gl 
+ * @param programInfo 
+ * @param buffers 
+ * @param cameraRotation 
+ */
+export default function drawScene(gl: WebGLRenderingContext,
+  programInfo: ProgramInformation, buffers: BufferInformation, cameraRotation: number) {
+    
+  gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Clear to black, fully opaque. (r, g, b, a)
+  gl.clearDepth(1.0);                 // Clear everything
+  gl.enable(gl.DEPTH_TEST);           // Enable depth testing
+  gl.depthFunc(gl.LEQUAL);            // Near things obscure far things
+
+  // Clear the canvas before we start drawing on it.
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+  // Get matrixs used for the camera position
+  const projectionMatrix = defineProjectionMatrix(gl);
+  const modelViewMatrix = defineModelViewMatrix(cameraRotation);
 
   // Tell WebGL how to pull out the positions and colors from the buffers
-  setAttribute(gl, buffers.vertex, programInfo.attribLocations.vertexPosition, 3);
-  setAttribute(gl, buffers.color, programInfo.attribLocations.vertexColor, 4);
+  setPositionAttribute(gl, buffers.vertex, programInfo.attribLocations.vertexPosition, 3);
+  setPositionAttribute(gl, buffers.color, programInfo.attribLocations.vertexColor, 4);
   // setPositionAttribute(gl, buffers, programInfo);
   // setColorAttribute(gl, buffers, programInfo);
 
@@ -88,12 +108,12 @@ export default function drawScene(gl: WebGLRenderingContext,
   gl.uniformMatrix4fv(
     programInfo.uniformLocations.projectionMatrix,
     false,
-    projectionMatrix
+    projectionMatrix as Float32List
   );
   gl.uniformMatrix4fv(
     programInfo.uniformLocations.modelViewMatrix,
     false,
-    modelViewMatrix
+    modelViewMatrix as Float32List
   );
 
   const vertexCount = 36;
@@ -111,7 +131,7 @@ export default function drawScene(gl: WebGLRenderingContext,
  * @param vertexIndex The index of the attribute
  * @param numComponents How many values are pulled out per iteration
  */
-function setAttribute(gl: WebGLRenderingContext, buffer: WebGLBuffer,
+function setPositionAttribute(gl: WebGLRenderingContext, buffer: WebGLBuffer,
   vertexIndex: number, numComponents: number): void {
   const type = gl.FLOAT;      // the data in the buffer is 32bit floats
   const normalize = false;    // don't normalize
