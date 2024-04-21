@@ -11,26 +11,16 @@
  *
  */
 
+import createGLContext from './context';
+
 /**
  * Main function that initializes the WebGL context and clears the canvas
  */
 function main(): void {
-  // Get the canvas element
-  const canvas: HTMLCanvasElement = document.getElementById('WebGLCanvas') as HTMLCanvasElement;
-
-  // Get the WebGL context
-  const gl: WebGLRenderingContext = canvas.getContext('webgl') as WebGLRenderingContext;
-
-  if (gl === null) {
-    alert(
-      'Unable to initialize WebGL. Your browser or machine may not support it.'
-    );
-    return;
-  }
-
+  let gl = createGLContext('WebGLCanvas');
   // Set clear color to black, fully opaque (rgba)
   gl.clearColor(0.0, 0.0, 0.0, 1.0);
-
+  
   // Clear the color buffer with specified clear color
   gl.clear(gl.COLOR_BUFFER_BIT);
 }

@@ -25,3 +25,16 @@ export interface ProgramInformation {
 export interface BufferInformation {
   vertex: WebGLBuffer;
 }
+
+export function createProgramInfo(gl: WebGLRenderingContext, shaderProgram: WebGLProgram): ProgramInformation {
+  return {
+    program: shaderProgram,
+    attribLocations: {
+      vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
+    },
+    uniformLocations: {
+      projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix') as WebGLUniformLocation,
+      modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix') as WebGLUniformLocation,
+    },
+  };
+}
